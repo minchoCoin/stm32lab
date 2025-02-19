@@ -65,6 +65,7 @@ UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
 MPU9250_t mpu9250_data;
+HAL_StatusTypeDef status;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -78,6 +79,9 @@ static void MX_USART1_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void send_errmsg(char* msg){
+	HAL_UART_Transmit(&huart1, (uint8_t *)msg, strlen(msg), 100);
+}
 uint8_t MPU9250_Init(void)
 {
     uint8_t check, data;
@@ -89,25 +93,80 @@ uint8_t MPU9250_Init(void)
 
     // 전원 관리 레지스터 초기화
     data = 0x00;       // 내부 8MHz 오실레이터 사용
-    HAL_I2C_Mem_Write(&hi2c1, MPU9250_ADDR, PWR_MGMT_1, 1, &data, sizeof(data), 100);
+    status=HAL_I2C_Mem_Write(&hi2c1, MPU9250_ADDR, PWR_MGMT_1, 1, &data, sizeof(data), 100);
+    if(status!=HAL_OK){
+    	send_errmsg("error on PWR_MGMT_1\r\n");
+    	Error_Handler();
+
+    }
+
 
     // 자이로스코프 설정 (±250dps)
     data = 0x00;
-    HAL_I2C_Mem_Write(&hi2c1, MPU9250_ADDR, GYRO_CONFIG, 1, &data, sizeof(data), 100);
+    status=HAL_I2C_Mem_Write(&hi2c1, MPU9250_ADDR, GYRO_CONFIG, 1, &data, sizeof(data), 100);
+    if(status!=HAL_OK){
+    	send_errmsg("error on GYRO_CONFIG\r\n");
+    	Error_Handler();
+
+    }
+
 
     // 가속도계 설정 (±2g)
     data = 0x00;
-    HAL_I2C_Mem_Write(&hi2c1, MPU9250_ADDR, ACCEL_CONFIG, 1, &data, sizeof(data), 100);
+    status=HAL_I2C_Mem_Write(&hi2c1, MPU9250_ADDR, ACCEL_CONFIG, 1, &data, sizeof(data), 100);
+    if(status!=HAL_OK){
+    	send_errmsg("error on ACCEL_CONFIG\r\n");
+    	Error_Handler();
+    }
+
 
     return 0;
 }
+void AK8963_Init(){
+	uint8_t data;
+	// I2C 마스터 모드 비활성화
+	//data = 0x00;
+	//HAL_I2C_Mem_Write(&hi2c1, MPU9250_ADDR, 0x6A, 1, &data, 1, 100);
 
+	// I2C 패스스루 활성화
+	data = 0x02;
+	status=HAL_I2C_Mem_Write(&hi2c1, MPU9250_ADDR, 0x37, 1, &data, 1, 100);
+	if(status!=HAL_OK){
+	    	send_errmsg("error on I2C paththrough\r\n");
+	    	Error_Handler();
+
+	    }
+	HAL_Delay(100);
+	// 먼저 소프트웨어 리셋
+	    data = 0x01;
+	    status=HAL_I2C_Mem_Write(&hi2c1, AK8963_ADDR, 0x0B, 1, &data, 1, 100);
+	    if(status!=HAL_OK){
+	    	    	send_errmsg("error on ak8963_softwarereset\r\n");
+	    	    	Error_Handler();
+
+	    	    }
+	    HAL_Delay(10);
+
+	    // 16비트 출력, 연속 측정 모드 2 설정
+	    data = 0x16;  // 0x16 = 0001 0110
+	    status=HAL_I2C_Mem_Write(&hi2c1, AK8963_ADDR, AK8963_CNTL1, 1, &data, 1, 100);
+	    if(status!=HAL_OK){
+	    	    	    	send_errmsg("error on ak8963_16bitoutputconfig\r\n");
+	    	    	    	Error_Handler();
+
+	    	    	    }
+	    HAL_Delay(10);
+}
 void MPU9250_ReadAccel(void)
 {
     uint8_t data[6];
     int16_t raw_data[3];
 
-    HAL_I2C_Mem_Read(&hi2c1, MPU9250_ADDR, ACCEL_XOUT_H, 1, data, sizeof(data), 100);
+    status=HAL_I2C_Mem_Read(&hi2c1, MPU9250_ADDR, ACCEL_XOUT_H, 1, data, sizeof(data), 100);
+    if(status!=HAL_OK){
+    	send_errmsg("error on read accel\r\n");
+    	    	Error_Handler();
+    }
 
     raw_data[0] = (data[0] << 8) | data[1];    // X축
     raw_data[1] = (data[2] << 8) | data[3];    // Y축
@@ -125,7 +184,12 @@ void MPU9250_ReadGyro(void)
     uint8_t data[6];
     int16_t raw_data[3];
 
-    HAL_I2C_Mem_Read(&hi2c1, MPU9250_ADDR, GYRO_XOUT_H, 1, data, sizeof(data), 100);
+    status=HAL_I2C_Mem_Read(&hi2c1, MPU9250_ADDR, GYRO_XOUT_H, 1, data, sizeof(data), 100);
+    if(status!=HAL_OK){
+    	send_errmsg("error on read gyro\r\n");
+    	Error_Handler();
+    }
+
 
     raw_data[0] = (data[0] << 8) | data[1];
     raw_data[1] = (data[2] << 8) | data[3];
@@ -144,12 +208,20 @@ void MPU9250_ReadMag(void)
     int16_t raw_data[3];
 
     // 데이터 준비 확인
-    HAL_I2C_Mem_Read(&hi2c1, AK8963_ADDR, AK8963_ST1, 1, &(data[0]), sizeof(data[0]), 100);
+    status=HAL_I2C_Mem_Read(&hi2c1, AK8963_ADDR, AK8963_ST1, 1, &(data[0]), sizeof(data[0]), 100);
+    if(status!=HAL_OK){
+    	send_errmsg("error on read ak8963_st1\r\n");
+    	Error_Handler();
+    }
+
     if(data[0] & 0x01)
     {
         // 자기장 데이터 읽기
-        HAL_I2C_Mem_Read(&hi2c1, AK8963_ADDR, AK8963_XOUT_L, 1, data, sizeof(data), 100);
-
+        status=HAL_I2C_Mem_Read(&hi2c1, AK8963_ADDR, AK8963_XOUT_L, 1, data, sizeof(data), 100);
+        if(status!=HAL_OK){
+            	send_errmsg("error on read ak8963_data\r\n");
+            	Error_Handler();
+            }
         raw_data[0] = (data[1] << 8) | data[0];    // X축
         raw_data[1] = (data[3] << 8) | data[2];    // Y축
         raw_data[2] = (data[5] << 8) | data[4];    // Z축
@@ -205,6 +277,7 @@ int main(void)
 	  	  HAL_UART_Transmit(&huart1, (uint8_t *)errmsg, strlen(errmsg), 100);
           Error_Handler();  // MPU9250 초기화 실패
       }
+  AK8963_Init();
   while (1)
   {
 
