@@ -36,6 +36,7 @@
 #define GYRO_XOUT_H  0x43
 #define AK8963_ADDR  0x0C<<1
 #define AK8963_ST1   0x02
+#define AK8963_ST2   0x09
 #define AK8963_XOUT_L 0x03
 #define AK8963_CNTL1 0x0A
 #define PWR_MGMT_1 0x6B
@@ -137,18 +138,16 @@ void AK8963_Init(){
 
 	    }
 	HAL_Delay(100);
-	// 먼저 소프트웨어 리셋
-	    data = 0x01;
-	    status=HAL_I2C_Mem_Write(&hi2c1, AK8963_ADDR, 0x0B, 1, &data, 1, 100);
+	data = 0x00;
+	    HAL_I2C_Mem_Write(&hi2c1, AK8963_ADDR, AK8963_CNTL1, 1, &data, 1, 100);
 	    if(status!=HAL_OK){
-	    	    	send_errmsg("error on ak8963_softwarereset\r\n");
+	    	    	send_errmsg("error on I2C init\r\n");
 	    	    	Error_Handler();
-
-	    	    }
+	    }
 	    HAL_Delay(10);
 
-	    // 16비트 출력, 연속 측정 모드 2 설정
-	    data = 0x16;  // 0x16 = 0001 0110
+	    // 16비트 출력, continuous 설정
+	    data = 0x16;
 	    status=HAL_I2C_Mem_Write(&hi2c1, AK8963_ADDR, AK8963_CNTL1, 1, &data, 1, 100);
 	    if(status!=HAL_OK){
 	    	    	    	send_errmsg("error on ak8963_16bitoutputconfig\r\n");
@@ -207,15 +206,8 @@ void MPU9250_ReadMag(void)
     uint8_t data[6];
     int16_t raw_data[3];
 
-    // 데이터 준비 확인
-    status=HAL_I2C_Mem_Read(&hi2c1, AK8963_ADDR, AK8963_ST1, 1, &(data[0]), sizeof(data[0]), 100);
-    if(status!=HAL_OK){
-    	send_errmsg("error on read ak8963_st1\r\n");
-    	Error_Handler();
-    }
 
-    if(data[0] & 0x01)
-    {
+
         // 자기장 데이터 읽기
         status=HAL_I2C_Mem_Read(&hi2c1, AK8963_ADDR, AK8963_XOUT_L, 1, data, sizeof(data), 100);
         if(status!=HAL_OK){
@@ -230,7 +222,13 @@ void MPU9250_ReadMag(void)
         mpu9250_data.mag[0] = raw_data[0] * 0.15f;
         mpu9250_data.mag[1] = raw_data[1] * 0.15f;
         mpu9250_data.mag[2] = raw_data[2] * 0.15f;
-    }
+
+        //make sure read ST2 after read mag data
+        status=HAL_I2C_Mem_Read(&hi2c1, AK8963_ADDR, AK8963_ST2, 1, &(data[0]), sizeof(data[0]), 100);
+        if(status!=HAL_OK){
+                    	send_errmsg("error on read ak8963_st2\r\n");
+                    	Error_Handler();
+                    }
 }
 /* USER CODE END 0 */
 
