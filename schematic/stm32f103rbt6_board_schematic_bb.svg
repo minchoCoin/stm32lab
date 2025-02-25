@@ -3824,8 +3824,8 @@
   <line stroke="#cc1414" stroke-linecap="round" stroke-width="1.6" x1="122.355" x2="43.0891" y1="45.7054" y2="45.7054"/>
  </g>
  <g partID="855150060">
-  <line stroke="#8c0000" stroke-linecap="round" stroke-width="3.2" x1="43.0896" x2="43.2364" y1="45.7054" y2="52.8368"/>
-  <line stroke="#cc1414" stroke-linecap="round" stroke-width="1.6" x1="43.0896" x2="43.2364" y1="45.7054" y2="52.8368"/>
+  <line stroke="#8c0000" stroke-linecap="round" stroke-width="3.2" x1="43.0896" x2="43.2364" y1="45.7054" y2="52.8369"/>
+  <line stroke="#cc1414" stroke-linecap="round" stroke-width="1.6" x1="43.0896" x2="43.2364" y1="45.7054" y2="52.8369"/>
  </g>
  <g partID="855149830">
   <line stroke="#8c0000" stroke-linecap="round" stroke-width="3.2" x1="122.436" x2="122.355" y1="52.8369" y2="45.7054"/>
@@ -3950,17 +3950,27 @@
   </g>
  </g>
  <g partID="855132560">
-  <g transform="translate(241.753,9.6768)">
+  <g transform="translate(241.753,9.67681)">
    <g>
-    <rect fill="#ffe9c8" height="23.2" stroke="#fabc4f" stroke-width="5.6" width="86.7173" x="2.8" y="2.8"/>
+    <rect fill="#ffe9c8" height="23.2" stroke="#fabc4f" stroke-width="5.6" width="86.7176" x="2.8" y="2.8"/>
     <g fill="#000000" font-family="Droid Sans" font-size="8.8" stroke="none" text-anchor="left">
      <text fill="#000000" x="8.8" y="17.6">ST-LINK V2  JTAG</text>
     </g>
    </g>
   </g>
  </g>
+ <g partID="855165350">
+  <g transform="translate(31.4776,5.61008)">
+   <g>
+    <rect fill="#ffe9c8" height="23.2" stroke="#fabc4f" stroke-width="5.6" width="41.4824" x="2.8" y="2.8"/>
+    <g fill="#000000" font-family="Droid Sans" font-size="8.8" stroke="none" text-anchor="left">
+     <text fill="#000000" x="8.8" y="17.6">BOOT0</text>
+    </g>
+   </g>
+  </g>
+ </g>
  <g partID="855150340">
-  <g transform="translate(95.1425,0)">
+  <g transform="translate(95.1424,0)">
    <g>
     <rect fill="#ffe9c8" height="34.4" stroke="#fabc4f" stroke-width="5.6" width="36.778" x="2.8" y="2.8"/>
     <g fill="#000000" font-family="Droid Sans" font-size="8.8" stroke="none" text-anchor="left">
@@ -3968,16 +3978,6 @@
     </g>
     <g fill="#000000" font-family="Droid Sans" font-size="8.8" stroke="none" text-anchor="left">
      <text fill="#000000" x="8.8" y="28.8">button</text>
-    </g>
-   </g>
-  </g>
- </g>
- <g partID="855165350">
-  <g transform="translate(31.4778,5.61007)">
-   <g>
-    <rect fill="#ffe9c8" height="23.2" stroke="#fabc4f" stroke-width="5.6" width="41.4824" x="2.8" y="2.8"/>
-    <g fill="#000000" font-family="Droid Sans" font-size="8.8" stroke="none" text-anchor="left">
-     <text fill="#000000" x="8.8" y="17.6">BOOT0</text>
     </g>
    </g>
   </g>
@@ -4043,6 +4043,16 @@
     <rect fill="#ffe9c8" height="23.2" stroke="#fabc4f" stroke-width="5.6" width="206.328" x="2.8" y="2.8"/>
     <g fill="#000000" font-family="Droid Sans" font-size="8.8" stroke="none" text-anchor="left">
      <text fill="#000000" x="8.8" y="17.6">SPI2_SS/SPI2_SCK/SPI2_MISO/SPI2_MOSI</text>
+    </g>
+   </g>
+  </g>
+ </g>
+ <g partID="855166800">
+  <g transform="translate(443.248,244.534)">
+   <g>
+    <rect fill="#ffe9c8" height="23.2" stroke="#fabc4f" stroke-width="5.6" width="59.6761" x="2.8" y="2.8"/>
+    <g fill="#000000" font-family="Droid Sans" font-size="8.8" stroke="none" text-anchor="left">
+     <text fill="#000000" x="8.8" y="17.6">Power LED</text>
     </g>
    </g>
   </g>
