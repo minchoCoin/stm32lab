@@ -10,3 +10,6 @@ stm32 practice with DIY board and stm32cubeide
 
 ## MPU9250_I2C
 [https://youtube.com/shorts/ByiFIXqM0QU](https://youtube.com/shorts/ByiFIXqM0QU)
+
+## raspberrypi-stm32 bluetooth
+[https://youtu.be/1xDIi4AG3hc](https://youtu.be/1xDIi4AG3hc)
