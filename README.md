@@ -91,3 +91,7 @@ stm32 practice with DIY board and stm32cubeide
 
 The schematic was created using [Fritzing](https://fritzing.org/).
 
+# reference
+- [stm32f103rb datasheet](https://www.st.com/resource/en/datasheet/stm32f103rb.pdf)
+- [RM0008 reference manual](https://www.keil.com/dd/docs/datashts/st/stm32f10xxx.pdf)
+- [UM1075 user manual](https://www.st.com/resource/en/user_manual/dm00026748-st-link-v2-in-circuit-debugger-programmer-for-stm8-and-stm32-stmicroelectronics.pdf)
