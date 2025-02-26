@@ -145,7 +145,7 @@ stm32 practice with DIY board and stm32cubeide
 The schematic was created using [Fritzing](https://fritzing.org/).
 
 # Raspberry Pi 5 serial commmunication
-> **Note**
+> [!NOTE]  
 > Raspberry Pi OS should be installed on Raspberry Pi 5
 ## Edit /boot/firmware/config.txt
 add 
