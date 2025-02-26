@@ -85,8 +85,15 @@ stm32 practice with DIY board and stm32cubeide
 # schematic
 ![schematic](schematic/stm32f103rbt6_board_schematic_bb.png)
 
+## schematic with mpu 9250 sensor
+### schematic with UART communication
+![schematic_UART](schematic_mpu9250_serial/stm32f103rbt6_mpu9250_UART_schematic_bb.png)
+### schematic with bluetooth communication
+![schematic_bluetooth](schematic_mpu9250_bluetooth/stm32f103rbt6_mpu9250_ble_schematic_bb.png)
+## board picture
 ![board picture](schematic/boardpicture1.jpg)
 
+## etc
 [more schematic picture...](https://github.com/minchoCoin/stm32lab/tree/main/schematic)
 
 The schematic was created using [Fritzing](https://fritzing.org/).
