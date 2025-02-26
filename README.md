@@ -82,11 +82,57 @@ stm32 practice with DIY board and stm32cubeide
 |         63        |   77  |      VSS3     |
 |         64        |   78  |      VDD3     |
 
+# pin connection
+## stm32 - st link v2
+|  stm32 | st-link v2 (JTAG) |
+|:------:|:-----------------:|
+|   VCC  |        VAPP       |
+| JNTRST |        TRST       |
+|   TDI  |        JTDI       |
+|   TMS  |        JTMS       |
+|   TCK  |        JTCK       |
+|   TDO  |        JTDO       |
+|   GND  |        GND        |
+
+## stm32 - MPU9250
+|   stm32  | MPU-9250 |
+|:--------:|:--------:|
+|    VCC   |    VCC   |
+|    GND   |    GND   |
+| I2C1_SCL |    SCL   |
+| I2C1_SDA |    SDA   |
+|    GND   |    AD0   |
+
+## stm32 - USB to TTL
+|   stm32   | USB to TTL |
+|:---------:|:----------:|
+|    GND    |     GND    |
+| USART1_TX |     RXD    |
+| USART1_RX |     TXD    |
+
+## stm32 - zs040 bluetooth module
+|     stm32     | ZS-040 bluetooth module |
+|:-------------:|:-----------------------:|
+|      GND      |           GND           |
+|   USART1_TX   |           RXD           |
+|   USART1_RX   |           TXD           |
+| 5v (external) |           VCC           |
+
+## stm32 - raspberry Pi 5
+|   stm32   | Raspberry Pi 5 |
+|:---------:|:--------------:|
+|    GND    |       GND      |
+| USART1_TX |   GPIO9(RXD3)  |
+| USART1_RX |   GPIO8(TXD3)  |
+
+
 # schematic
 ![schematic](schematic/stm32f103rbt6_board_schematic_bb.png)
 
 ## schematic with mpu 9250 sensor
-### schematic with UART communication
+### schematic with UART communication with putty
+![schematic_UART](schematic_mpu9250_TTL/stm32f103rbt6_mpu9250_usbTTL_schematic_bb.png)
+### schematic with UART communication with Raspberrypi
 ![schematic_UART](schematic_mpu9250_serial/stm32f103rbt6_mpu9250_UART_schematic_bb.png)
 ### schematic with bluetooth communication
 ![schematic_bluetooth](schematic_mpu9250_bluetooth/stm32f103rbt6_mpu9250_ble_schematic_bb.png)
@@ -97,6 +143,31 @@ stm32 practice with DIY board and stm32cubeide
 [more schematic picture...](https://github.com/minchoCoin/stm32lab/tree/main/schematic)
 
 The schematic was created using [Fritzing](https://fritzing.org/).
+
+# Raspberry Pi 5 serial commmunication
+## Edit /boot/firmware/config.txt
+add 
+```
+dtoverlay=uart3
+enable_uart=1
+```
+## check UART
+After rebooting...
+
+### check pinctrl
+```
+user@myraspberrypi:~ $ pinctrl
+...
+ 8: a2    pn | hi // GPIO8 = TXD3
+ 9: a2    pu | hi // GPIO9 = RXD3
+...
+```
+### check serial line
+```
+user@myraspberrypi:~ $ ls -l /dev/ttyAMA*
+crw-rw---- 1 root dialout 204, 74 Feb 25 11:07 /dev/ttyAMA10
+crw-rw---- 1 root dialout 204, 67 Feb 25 11:07 /dev/ttyAMA3
+```
 
 # reference
 - [stm32f103rb datasheet](https://www.st.com/resource/en/datasheet/stm32f103rb.pdf)
